@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from utils.mydecorators import _error_decorator, _trace_decorator
 
 class Distance:
@@ -44,7 +45,7 @@ class Distance:
                                 url = f"https://www.mapdevelopers.com/distance_from_to.php?&from={mycity}&to={city}"
                                 ldriver.get(url)
                                 self.humanize.wait_human(10, 10)
-                                element = ldriver.find_element_by_id("driving_status")
+                                element = ldriver.find_element(By.ID, "driving_status")
                                 line = element.text
                                 lastof = line.rindex(",") + 2
                                 fin = line.rindex("meters") - 1

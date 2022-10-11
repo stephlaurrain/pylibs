@@ -1,11 +1,13 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+
 import time
 
 
 def get_clear_browsing_button(driver):
     """Find the "CLEAR BROWSING BUTTON" on the Chrome settings page."""
-    return driver.find_element_by_css_selector('* /deep/ #clearBrowsingDataConfirm')
+    return driver.find_element(By.CSS_SELECTOR,'* /deep/ #clearBrowsingDataConfirm')
 
 
 def delete_cache(driver):
