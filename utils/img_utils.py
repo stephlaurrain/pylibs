@@ -11,11 +11,17 @@ def convert_to_webp(source, ext, rm_source=False, quality=90):
                     os.remove(source)
                 return destination           
         
-def convert_png_to_jpg():
-        paths = Path(f"{self.root_app}{os.path.sep}data{os.path.sep}results").glob("**/*.png")
-        today = datetime.now()
+""" usage :
+if (command == "conv"):
+    img_utils.convert_dir_to_webp(f"{self.root_app}{os.path.sep}data{os.path.sep}results", rm_source=True)
+    exit()
+"""
+def convert_dir_to_webp(source_path, rm_source=False):
+        paths = Path(f"{source_path}").glob("**/*.png")
         for path in paths:
                 destination = os.path.splitext(path)[0]+'.jpg'
                 image = Image.open(path)  
                 print(destination)
                 image.save(destination, format="webp")  
+                if rm_source:
+                    os.remove(path)
