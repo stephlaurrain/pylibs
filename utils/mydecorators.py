@@ -1,5 +1,4 @@
 import functools
-import inspect
 
 # https://stackoverflow.com/questions/11731136/class-method-decorator-with-self-arguments
 # https://realpython.com/primer-on-python-decorators/
