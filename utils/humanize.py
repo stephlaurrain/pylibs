@@ -1,6 +1,6 @@
 from time import sleep
 import random
-from utils.mydecorators import _error_decorator, _trace_decorator
+from utils.mydecorators import _error_decorator
 
 
 class Humanize:
@@ -12,9 +12,9 @@ class Humanize:
             self.default_wait = default_wait
             self.trace = trace
       
-    @_trace_decorator
     @_error_decorator()
     def wait_human(self, offset=-1, tmp=-1):
+        self.trace(inspect.stack())
         loffset = offset
         loffwait = tmp
 

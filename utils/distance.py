@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from utils.mydecorators import _error_decorator, _trace_decorator
+from utils.mydecorators import _error_decorator
 
 class Distance:
       
@@ -10,11 +10,10 @@ class Distance:
                 self.jsprms = jsprms
                 self.dbcontext = dbcontext
                 self.humanize = humanize
-            
-
-        @_trace_decorator
+                    
         @_error_decorator()
         def get_local_driver(self):
+                self.trace(inspect.stack())
                 options = webdriver.ChromeOptions()
                 options.add_argument("--headless")
                 options.add_argument("--no-sandbox")
@@ -28,8 +27,8 @@ class Distance:
                 ldriver.set_window_size(1900, 1080)
                 return ldriver
 
-        @_trace_decorator
         def get_distance(self, city):
+                self.trace(inspect.stack())
                 if self.jsprms.prms['freemode']:
                         return 0
 

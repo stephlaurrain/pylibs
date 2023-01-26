@@ -29,10 +29,5 @@ def _error_return_int_decorator(function):
                         #print (f"{function.__name__} erreur {e}")
                         return -1                                
         return wrapper
-                
-def _trace_decorator(function):
-        def wrapper(mainclass, *args, **kwargs):
-                mainclass.trace(inspect.stack()[1])
-                result = function(mainclass, *args, **kwargs)
-                return result
-        return wrapper
+               
+
