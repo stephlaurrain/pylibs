@@ -1,9 +1,16 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.command import Command
 
 import time
 
+def is_driver_on(driver):
+    try:
+        driver.execute(Command.STATUS)
+        return True
+    except :
+        return False
 
 def get_clear_browsing_button(driver):
     """Find the "CLEAR BROWSING BUTTON" on the Chrome settings page."""
