@@ -9,6 +9,12 @@ def get_clear_browsing_button(driver):
     """Find the "CLEAR BROWSING BUTTON" on the Chrome settings page."""
     return driver.find_element(By.CSS_SELECTOR,'* /deep/ #clearBrowsingDataConfirm')
 
+def type_onebyone(driver, humanize, element, str_to_type):
+    for i in range(len(str_to_type)):
+        element.send_keys(str_to_type[i])
+        humanize.wait_human(1, 1)
+        
+
 
 def delete_cache(driver):
     driver.execute_script("window.open('');")
