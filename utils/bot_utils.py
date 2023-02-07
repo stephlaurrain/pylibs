@@ -8,6 +8,7 @@ class Bot_utils:
             self.trace = trace
             self.log = log
             self.jsprms = jsprms
+            self.root_app = os.getcwd()
 
     def stop(self):
             self.trace(inspect.stack())
