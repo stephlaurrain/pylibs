@@ -13,6 +13,12 @@ def clean_dir(dir_to_clean):
             except Exception as e:
                     print('Failed to delete %s. Reason: %s' % (file_path, e))
 
+"""
+efface un dossier et tout ce qu'il contient
+"""
+def rmrf(dir_to_clean):
+    shutil.rmtree(dir_to_clean)
+
 def remove_old_files(dir_path, ptime, unit="d"):
     all_files = os.listdir(dir_path)
     now = time.time()
