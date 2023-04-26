@@ -1,31 +1,42 @@
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from utils.mydecorators import _error_decorator
+import inspect
 
 class Distance:
       
-        def __init__(self, trace, log, jsprms, humanize, dbcontext):            
+        def __init__(self, trace, log, jsprms, humanize, api):            
                 self.trace = trace
                 self.log = log
                 self.jsprms = jsprms
-                self.dbcontext = dbcontext
+                self.api = api
                 self.humanize = humanize
                     
         @_error_decorator()
         def get_local_driver(self):
                 self.trace(inspect.stack())
                 options = webdriver.ChromeOptions()
-                options.add_argument("--headless")
-                options.add_argument("--no-sandbox")
-                options.add_argument("--disable-dev-shm-usage")
-                options.add_argument("--disable-gpu")
-                prefs = {"profile.managed_default_content_settings.images": 2}
-                options.add_experimental_option("prefs", prefs)
-                options.add_argument(f"user-agent={self.jsprms.prms['user_agent']}")
+                options.add_argument('--disable-blink-features=AutomationControlled')
+                options.add_experimental_option("excludeSwitches", ["enable-automation"])
+                options.add_experimental_option('useAutomationExtension', False)
                 options.add_argument("--start-maximized")
-                ldriver = webdriver.Chrome(executable_path=self.jsprms.prms['chromedriver'], options=options)
-                ldriver.set_window_size(1900, 1080)
-                return ldriver
+                if (self.jsprms.prms['box']):
+                        options.add_argument("--no-sandbox")
+                        options.add_argument("--disable-dev-shm-usage")
+                        options.add_argument("--disable-gpu")
+                        prefs = {"profile.managed_default_content_settings.images": 2}  
+                        options.add_experimental_option("prefs", prefs)   
+                        driver = webdriver.Chrome(executable_path=self.chromedriver_bin_path, options=options)
+                else:
+                        prefs = {"profile.managed_default_content_settings.images": 1}
+                        options.add_experimental_option("prefs", prefs)   
+                        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+                driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+                # resout le unreachable
+                driver.set_window_size(1900, 1080)                
+                return driver
 
         def get_distance(self, city):
                 self.trace(inspect.stack())
@@ -35,7 +46,7 @@ class Distance:
                 try:
                         mycity = self.jsprms.prms['city']
                         self.log.lg(f"Distance from {mycity} to {city}")
-                        kmdist = self.dbcontext.get_distance(city)
+                        kmdist = self.api.get_distance(city)
                         print(kmdist)
                         dist = 10000
                         if kmdist == -1:
@@ -52,7 +63,7 @@ class Distance:
                                 self.log.lg(dist)
                                 kmdist = round(float(int(dist)/1000))
                                 self.log.lg(f"Getted from web, add distance to database={kmdist}#")
-                                self.dbcontext.add_distance(city, kmdist)
+                                self.api.add_distance(city, kmdist)
                                 ldriver.close()
                                 ldriver.quit()
                         self.log.lg(f"DISTANCE={kmdist}#")
