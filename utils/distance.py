@@ -29,7 +29,7 @@ class Distance:
                         options.add_argument("--disable-gpu")
                         prefs = {"profile.managed_default_content_settings.images": 2}  
                         options.add_experimental_option("prefs", prefs)   
-                        driver = webdriver.Chrome(executable_path=self.chromedriver_bin_path, options=options)
+                        driver = webdriver.Chrome(executable_path=self.jsprms.prms['chromedriver'], options=options)
                 else:
                         prefs = {"profile.managed_default_content_settings.images": 1}
                         options.add_experimental_option("prefs", prefs)   
