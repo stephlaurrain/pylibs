@@ -39,21 +39,20 @@ class Distance:
                 driver.set_window_size(1900, 1080)                
                 return driver
 
-        def get_distance(self, city):
+        def get_distance(self, distant_city, mycity):
                 self.trace(inspect.stack())
                 if self.jsprms.prms['freemode']:
                         return 0
 
-                try:
-                        mycity = self.jsprms.prms['city']
-                        self.log.lg(f"Distance from {mycity} to {city}")
-                        kmdist = self.api.get_distance(city)
+                try:   
+                        self.log.lg(f"Distance from {mycity} to {distant_city}")
+                        kmdist = self.api.get_distance(distant_city)
                         print(kmdist)
                         dist = 10000
                         if kmdist == -1:
                                 # Instance locale : ça ne plante plus
                                 ldriver = self.get_local_driver()
-                                url = f"https://www.mapdevelopers.com/distance_from_to.php?&from={mycity}&to={city}"
+                                url = f"https://www.mapdevelopers.com/distance_from_to.php?&from={mycity}&to={distant_city}"
                                 ldriver.get(url)
                                 self.humanize.wait_human(10, 10)
                                 element = ldriver.find_element(By.ID, "driving_status")
@@ -64,13 +63,13 @@ class Distance:
                                 self.log.lg(dist)
                                 kmdist = round(float(int(dist)/1000))
                                 self.log.lg(f"Getted from web, add distance to database={kmdist}#")
-                                self.api.add_distance(city, kmdist)
+                                self.api.add_distance(distant_city, kmdist)
                                 ldriver.close()
                                 ldriver.quit()
                         self.log.lg(f"DISTANCE={kmdist}#")
                         return kmdist
 
                 except Exception as e:
-                        errmess = f"DISTANCE {mycity} - {city} A PLANTE={e}#"
+                        errmess = f"DISTANCE {mycity} - {distant_city} A PLANTE={e}#"
                         self.log.errlg(errmess)
                         return 10000
