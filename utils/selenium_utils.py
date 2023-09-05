@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 import inspect
 import time
+import base64
 
 class Selenium_utils:
       
@@ -101,3 +102,22 @@ class Selenium_utils:
             if new_height == last_height:
                 break
             last_height = new_height
+            
+    def full_screenshot(self, img_path):
+        page_rect = self.driver.execute_cdp_cmd('Page.getLayoutMetrics', {})
+        # parameters needed for ful page screenshot
+        # note we are setting the width and height of the viewport to screenshot, same as the site's content size
+        screenshot_config = {'captureBeyondViewport': True,
+                                'fromSurface': True,
+                                'clip': {'width': page_rect['contentSize']['width'],
+                                        'height': page_rect['contentSize']['height'],
+                                        'x': 0,
+                                        'y': 0,
+                                        'scale': 1},
+                                }
+        # Dictionary with 1 key: data
+        base_64_png = self.driver.execute_cdp_cmd('Page.captureScreenshot', screenshot_config)
+
+        # Write img to file
+        with open(img_path, "wb") as fh:
+                fh.write(base64.urlsafe_b64decode(base_64_png['data']))
