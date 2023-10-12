@@ -19,6 +19,18 @@ efface un dossier et tout ce qu'il contient
 def rmrf(dir_to_clean):
     shutil.rmtree(dir_to_clean)
 
+"""
+ delete empty dirs recursively
+"""
+def delete_empty_folders_recurs(directory):
+    for dirpath, dirnames, filenames in os.walk(directory, topdown=False):
+        for dirname in dirnames:
+            folder_path = os.path.join(dirpath, dirname)
+            if not os.listdir(folder_path):
+                os.rmdir(folder_path)
+                print(f"Empty folder deleted: {folder_path}")
+
+
 def remove_old_files(dir_path, ptime, unit="d"):
     all_files = os.listdir(dir_path)
     now = time.time()
