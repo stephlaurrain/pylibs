@@ -22,13 +22,18 @@ def rmrf(dir_to_clean):
 """
  delete empty dirs recursively
 """
-def delete_empty_folders_recurs(directory):
+def delete_empty_folders_recurs(directory):    
     for dirpath, dirnames, filenames in os.walk(directory, topdown=False):
         for dirname in dirnames:
             folder_path = os.path.join(dirpath, dirname)
             if not os.listdir(folder_path):
-                os.rmdir(folder_path)
-                print(f"Empty folder deleted: {folder_path}")
+                try:
+                    os.rmdir(folder_path)
+                    print(f"Empty folder deleted: {folder_path}")
+                except Exception as e:
+                    print(e)                                                
+                    input("planté ! press any key")
+    
 
 
 def remove_old_files(dir_path, ptime, unit="d"):
