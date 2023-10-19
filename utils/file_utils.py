@@ -57,3 +57,7 @@ def str_to_textfile (filename, str_to_write):
     text_file = open(filename, "w")
     text_file.write(str_to_write)
     text_file.close()
+
+def filter_posix_path(pth):
+    encoded_text = str(pth).encode('latin-1', errors='replace')    
+    return encoded_text.decode('latin-1') 
