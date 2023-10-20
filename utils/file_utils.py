@@ -1,5 +1,6 @@
 import os, shutil
 import time
+import tarfile
 
 def clean_dir(dir_to_clean):                        
                 
@@ -61,3 +62,19 @@ def str_to_textfile (filename, str_to_write):
 def filter_posix_path(pth):
     encoded_text = str(pth).encode('latin-1', errors='replace')    
     return encoded_text.decode('latin-1') 
+
+def compress_file_to_tar(pth):
+    fichier_tar_gz = f"{pth}.tar.gz"
+    with tarfile.open(fichier_tar_gz, 'w:gz') as tar:
+        tar.add(pth)    
+
+def decompress_tar_file(pth, dest_path):
+    with tarfile.open(pth, 'r:gz') as tar:
+        # tar.extractall(path=dest_path)
+        for member in tar.getmembers():        
+            member.name = os.path.basename(member.name)
+            # extract_path = os.path.join(dest_path, member.name)
+            tar.extract(member, path=dest_path)
+
+    
+
