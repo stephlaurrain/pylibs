@@ -76,5 +76,9 @@ def decompress_tar_file(pth, dest_path):
             # extract_path = os.path.join(dest_path, member.name)
             tar.extract(member, path=dest_path)
 
+def get_filename_without_extension(filepath):    
+    base = os.path.basename(filepath)    
+    filename_without_extension, _ = os.path.splitext(base)
+    return filename_without_extension
     
 
