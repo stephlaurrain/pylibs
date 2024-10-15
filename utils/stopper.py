@@ -2,13 +2,12 @@ import os
 from os import path
 import inspect
 
-class Bot_utils:
+class Stopper:
       
-    def __init__(self, trace, log, jsprms):            
+    def __init__(self, root_app, trace, log):            
             self.trace = trace
-            self.log = log
-            self.jsprms = jsprms
-            self.root_app = os.getcwd()
+            self.log = log            
+            self.root_app = root_app
 
     def stop(self):
             self.trace(inspect.stack())

@@ -6,9 +6,9 @@ from datetime import datetime
 
 class Log:
       
-    def __init__(self):
+    def __init__(self, root_app):
         self.formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
-        self.root_app = os.getcwd()
+        self.root_app = root_app
 
     def init(self, profil):
         today = datetime.now()

@@ -3,25 +3,19 @@ import os
 from time import sleep
 import random
 from utils.mydecorators import _error_decorator
+import utils.stopper
 
 
 class Humanize:
       
-    def __init__(self, trace, log, offset_wait, wait, default_wait):            
+    def __init__(self, root_app, trace, log, stopper, offset_wait, wait, default_wait):            
             self.log = log
             self.offset_wait = offset_wait
             self.wait = wait
             self.default_wait = default_wait
             self.trace = trace
-            self.root_app = os.getcwd()
-      
-
-    def stop(self):
-        stopfile = f"{self.root_app}{os.path.sep}stop"
-        res = os.path.exists(stopfile)
-        if (res):
-                self.log.lg("=STOP THE BOT=")
-        return res
+            self.stopper = stopper
+            self.root_app = root_app  
 
     @_error_decorator()
     def wait_human(self, offset=-1, tmp=-1):
@@ -38,7 +32,7 @@ class Humanize:
         res = random.randint(loffset, loffset+loffwait)
         self.log.lg(f"wait for {res} seconds")
         for i in range(res):
-              if self.stop():
+              if self.stopper.stop():
                     break
               sleep(1)        
         # sleep(res)
